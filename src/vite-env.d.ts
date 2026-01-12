@@ -61,3 +61,26 @@ declare module '@strudel/webaudio' {
   export function initAudioOnFirstClick(): void
   export function getAudioContext(): AudioContext
 }
+
+declare module '@lezer/highlight' {
+  export interface Tag {
+    set: Tag[]
+  }
+  export const tags: {
+    keyword: Tag
+    string: Tag
+    number: Tag
+    comment: Tag
+    operator: Tag
+    variableName: Tag
+    propertyName: Tag
+    function: (tag: Tag) => Tag
+    definition: (tag: Tag) => Tag
+    bracket: Tag
+    punctuation: Tag
+    bool: Tag
+    null: Tag
+    regexp: Tag
+    [key: string]: Tag | ((tag: Tag) => Tag)
+  }
+}
