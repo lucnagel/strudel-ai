@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from 'react'
+import { generateSessionName } from '../lib/sessionNames'
 
 const STORAGE_KEY = 'strudel-sessions-v1'
 const MAX_HISTORY = 50
@@ -23,7 +24,7 @@ function createSession(name?: string): Session {
   const now = Date.now()
   return {
     id,
-    name: name || `Session ${new Date(now).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`,
+    name: name || generateSessionName(),
     code: 's("bd sd")',
     history: ['s("bd sd")'],
     historyIndex: 0,
