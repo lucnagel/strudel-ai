@@ -1,0 +1,206 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "SF Mono", "Monaco", "Inconsolata", "Fira Code", monospace;
+  --color-bg: #000;
+  --color-fg: #fff;
+  --color-muted: #666;
+  --color-border: #222;
+  --color-surface: #0a0a0a;
+  --color-hover: #161616;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-fg);
+  color: var(--color-bg);
+}
+
+/* Thinking dots animation */
+@keyframes thinking {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+.thinking-dot {
+  animation: thinking 1s ease-in-out infinite;
+}
+
+/* Activity pulse animation */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.activity-pulse {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* Equalizer bars animation */
+@keyframes eq {
+  0%, 100% { height: 3px; }
+  50% { height: 14px; }
+}
+
+.eq-bar {
+  animation: eq 0.8s ease-in-out infinite;
+}
+
+/* CodeMirror theme override */
+.cm-editor {
+  background: transparent !important;
+  height: 100%;
+}
+
+.cm-editor .cm-content {
+  font-family: var(--font-mono);
+  caret-color: var(--color-fg);
+}
+
+.cm-editor .cm-cursor {
+  border-left-color: var(--color-fg);
+}
+
+.cm-editor .cm-selectionBackground {
+  background: #222 !important;
+}
+
+.cm-editor.cm-focused .cm-selectionBackground {
+  background: #333 !important;
+}
+
+.cm-editor .cm-gutters {
+  background: transparent;
+  border-right: 1px solid var(--color-border);
+  color: var(--color-muted);
+}
+
+.cm-editor .cm-activeLineGutter {
+  background: var(--color-surface);
+}
+
+.cm-editor .cm-activeLine {
+  background: var(--color-surface);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-muted);
+}
+
+/* Strudel Editor */
+.strudel-editor {
+  height: 100%;
+}
+
+.strudel-editor .cm-editor {
+  height: 100%;
+  background: var(--color-bg) !important;
+}
+
+.strudel-editor .cm-scroller {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* Strudel highlighting - active events */
+.strudel-editor .cm-strudel-flash {
+  background: rgba(255, 255, 255, 0.3) !important;
+  border-radius: 2px;
+}
+
+.strudel-editor .cm-strudel-highlight {
+  background: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Mini notation widgets */
+.strudel-editor .cm-mini-widget {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.strudel-editor .cm-mini-widget canvas {
+  vertical-align: middle;
+  opacity: 0.7;
+}
+
+/* Syntax highlighting - monochrome */
+.strudel-editor .tok-keyword { color: #888; }
+.strudel-editor .tok-string { color: #fff; }
+.strudel-editor .tok-number { color: #aaa; }
+.strudel-editor .tok-comment { color: #555; font-style: italic; }
+.strudel-editor .tok-operator { color: #777; }
+.strudel-editor .tok-function { color: #fff; }
+.strudel-editor .tok-variableName { color: #ccc; }
+.strudel-editor .tok-propertyName { color: #999; }
+
+/* Active line */
+.strudel-editor .cm-activeLine {
+  background: var(--color-surface) !important;
+}
+
+/* Selection */
+.strudel-editor .cm-selectionBackground {
+  background: #222 !important;
+}
+
+.strudel-editor .cm-focused .cm-selectionBackground {
+  background: #333 !important;
+}
+
+/* Line numbers */
+.strudel-editor .cm-gutters {
+  background: var(--color-bg);
+  border-right: 1px solid var(--color-border);
+  color: var(--color-muted);
+}
+
+/* Cursor */
+.strudel-editor .cm-cursor {
+  border-left-color: #fff !important;
+}
+
+/* Textarea editor styles */
+textarea {
+  font-family: var(--font-mono) !important;
+}
+
+/* Event flash overlay */
+@keyframes event-flash {
+  0% { opacity: 0.15; }
+  100% { opacity: 0; }
+}
+
+.event-flash {
+  animation: event-flash 0.15s ease-out;
+}
