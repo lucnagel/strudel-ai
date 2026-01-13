@@ -1,8 +1,16 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "TX-02";
+  src: url("/fonts/TX-02.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
-  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-mono: "SF Mono", "Monaco", "Inconsolata", "Fira Code", monospace;
+  --font-sans: "TX-02", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "TX-02", "SF Mono", "Monaco", "Inconsolata", "Fira Code", monospace;
   --color-bg: #000;
   --color-fg: #fff;
   --color-muted: #666;
