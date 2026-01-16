@@ -64,3 +64,12 @@ export function generateSessionNameOptions(count = 5): string[] {
   }
   return Array.from(names)
 }
+
+// Simple timestamp-based name for favorites
+export function generateFavoriteName(): string {
+  return new Date().toLocaleTimeString('en-US', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false
+  })
+}

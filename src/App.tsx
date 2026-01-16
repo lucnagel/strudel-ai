@@ -87,6 +87,10 @@ export default function App() {
     history.redo()
   }, [history])
 
+  const handleAddFavorite = useCallback(() => {
+    history.addFavorite()
+  }, [history])
+
   const handleOpenExport = useCallback(() => {
     setShowExportDialog(true)
   }, [])
@@ -175,6 +179,8 @@ export default function App() {
               onNew={history.newSession}
               onSwitch={history.switchSession}
               onDelete={history.deleteSession}
+              onRestoreFavorite={history.restoreFavorite}
+              onDeleteFavorite={history.deleteFavorite}
             />
           </div>
           <Controls
@@ -184,6 +190,7 @@ export default function App() {
             onUndo={handleUndo}
             onRedo={handleRedo}
             onExport={handleOpenExport}
+            onAddFavorite={handleAddFavorite}
             canUndo={history.canUndo}
             canRedo={history.canRedo}
             isExporting={exportProgress !== null}

@@ -1,4 +1,4 @@
-import { Play, Pause, Square, Undo2, Redo2, Download } from 'lucide-react'
+import { Play, Pause, Square, Undo2, Redo2, Download, Star } from 'lucide-react'
 
 type ControlsProps = {
   isPlaying: boolean
@@ -7,6 +7,7 @@ type ControlsProps = {
   onUndo: () => void
   onRedo: () => void
   onExport: () => void
+  onAddFavorite: () => void
   canUndo: boolean
   canRedo: boolean
   isExporting: boolean
@@ -19,6 +20,7 @@ export function Controls({
   onUndo,
   onRedo,
   onExport,
+  onAddFavorite,
   canUndo,
   canRedo,
   isExporting
@@ -40,6 +42,13 @@ export function Controls({
         title="Redo"
       >
         <Redo2 size={14} strokeWidth={1.5} />
+      </button>
+      <button
+        onClick={onAddFavorite}
+        className="w-8 h-8 flex items-center justify-center hover:bg-[var(--color-hover)] transition-colors"
+        title="Save as favorite"
+      >
+        <Star size={14} strokeWidth={1.5} />
       </button>
 
       <div className="w-px h-4 bg-[var(--color-border)] mx-1" />

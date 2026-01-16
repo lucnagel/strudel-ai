@@ -1,8 +1,15 @@
 import { useState, useCallback, useEffect } from 'react'
-import { generateSessionName } from '../lib/sessionNames'
+import { generateSessionName, generateFavoriteName } from '../lib/sessionNames'
 
 const STORAGE_KEY = 'strudel-sessions-v1'
 const MAX_HISTORY = 50
+
+type Favorite = {
+  id: string
+  name: string
+  code: string
+  createdAt: number
+}
 
 type Session = {
   id: string
@@ -12,6 +19,7 @@ type Session = {
   historyIndex: number
   createdAt: number
   updatedAt: number
+  favorites: Favorite[]
 }
 
 type SessionsState = {
@@ -29,7 +37,8 @@ function createSession(name?: string): Session {
     history: ['s("bd sd")'],
     historyIndex: 0,
     createdAt: now,
-    updatedAt: now
+    updatedAt: now,
+    favorites: []
   }
 }
 
@@ -39,7 +48,14 @@ function loadSessions(): SessionsState {
     if (saved) {
       const parsed = JSON.parse(saved) as SessionsState
       if (parsed.sessions?.length > 0) {
-        return parsed
+        // Migrate sessions without favorites field
+        return {
+          ...parsed,
+          sessions: parsed.sessions.map(s => ({
+            ...s,
+            favorites: s.favorites || []
+          }))
+        }
       }
     }
   } catch {
@@ -189,6 +205,68 @@ export function useHistory() {
     }))
   }, [])
 
+  const addFavorite = useCallback((name?: string) => {
+    setState(s => ({
+      ...s,
+      sessions: s.sessions.map(session => {
+        if (session.id !== s.activeSessionId) return session
+
+        const favorite: Favorite = {
+          id: crypto.randomUUID(),
+          name: name || generateFavoriteName(),
+          code: session.code,
+          createdAt: Date.now()
+        }
+
+        return {
+          ...session,
+          favorites: [...session.favorites, favorite]
+        }
+      })
+    }))
+  }, [])
+
+  const restoreFavorite = useCallback((favoriteId: string) => {
+    setState(s => {
+      const session = s.sessions.find(sess => sess.id === s.activeSessionId)
+      const favorite = session?.favorites.find(f => f.id === favoriteId)
+      if (!favorite) return s
+
+      return {
+        ...s,
+        sessions: s.sessions.map(sess => {
+          if (sess.id !== s.activeSessionId) return sess
+
+          // Add to history when restoring
+          const newHistory = sess.history.slice(0, sess.historyIndex + 1)
+          newHistory.push(favorite.code)
+          if (newHistory.length > MAX_HISTORY) newHistory.shift()
+
+          return {
+            ...sess,
+            code: favorite.code,
+            history: newHistory,
+            historyIndex: newHistory.length - 1,
+            updatedAt: Date.now()
+          }
+        })
+      }
+    })
+  }, [])
+
+  const deleteFavorite = useCallback((favoriteId: string) => {
+    setState(s => ({
+      ...s,
+      sessions: s.sessions.map(session => {
+        if (session.id !== s.activeSessionId) return session
+        return {
+          ...session,
+          favorites: session.favorites.filter(f => f.id !== favoriteId)
+        }
+      })
+    }))
+  }, [])
+
   const canUndo = activeSession.historyIndex > 0
   const canRedo = activeSession.historyIndex < activeSession.history.length - 1
 
@@ -206,6 +284,10 @@ export function useHistory() {
     newSession,
     switchSession,
     deleteSession,
-    renameSession
+    renameSession,
+    // Favorites
+    addFavorite,
+    restoreFavorite,
+    deleteFavorite
   }
 }
